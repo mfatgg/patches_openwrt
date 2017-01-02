@@ -1,0 +1,44 @@
+Index: Makefile
+===================================================================
+--- Makefile	(revision 14000)
++++ Makefile	(working copy)
+@@ -18,7 +18,7 @@
+ 
+ include $(INCLUDE_DIR)/package.mk
+ 
+-define Package/mpd
++define Package/mpd-old
+   SECTION:=sound
+   CATEGORY:=Sound
+   DEPENDS:=+libflac +libid3tag +libmad +libvorbisidec +libpthread +libiconv
+@@ -26,13 +26,13 @@
+   URL:=http://www.musicpd.org/
+ endef
+ 
+-define Package/mpd/description
++define Package/mpd-old/description
+ 	MPD is a music player supporting flac, mp3 and ogg files.
+ 	It is typically controlled over a network using one of it's many
+ 	clients including mpc(console), gmpc(gnome), phpmp(php) etc.
+ endef
+ 
+-define Package/mpd/conffiles
++define Package/mpd-old/conffiles
+ /etc/mpd.conf
+ endef
+ 
+@@ -66,7 +66,7 @@
+ 		all install
+ endef
+ 
+-define Package/mpd/install
++define Package/mpd-old/install
+ 	$(INSTALL_DIR) $(1)/etc
+ 	$(CP) $(PKG_BUILD_DIR)/doc/mpdconf.example $(1)/etc/mpd.conf
+ 	$(INSTALL_DIR) $(1)/usr/bin
+@@ -75,4 +75,4 @@
+ 	$(INSTALL_BIN) ./files/mpd.init $(1)/etc/init.d/mpd
+ endef
+ 
+-$(eval $(call BuildPackage,mpd))
++$(eval $(call BuildPackage,mpd-old))

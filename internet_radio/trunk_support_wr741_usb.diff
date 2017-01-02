@@ -1,0 +1,87 @@
+Index: feeds.conf.default
+===================================================================
+--- feeds.conf.default	(revision 31220)
++++ feeds.conf.default	(working copy)
+@@ -8,3 +8,4 @@
+ #src-svn xfce svn://svn.openwrt.org/openwrt/feeds/xfce
+ #src-svn lxde svn://svn.openwrt.org/openwrt/feeds/lxde
+ #src-link custom /usr/src/openwrt/custom-feed
++src-link custom /home/mfatgg/src/openwrt/customfeeds
+\ No newline at end of file
+Index: target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr741nd-v4.c
+===================================================================
+--- target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr741nd-v4.c	(revision 31220)
++++ target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr741nd-v4.c	(working copy)
+@@ -15,6 +15,7 @@
+ 
+ #include "common.h"
+ #include "dev-eth.h"
++#include "dev-usb.h"
+ #include "dev-gpio-buttons.h"
+ #include "dev-leds-gpio.h"
+ #include "dev-m25p80.h"
+@@ -121,6 +122,8 @@
+ 
+ 	tl_wr741ndv4_gmac_setup();
+ 
++	ath79_register_usb();
++
+ 	ath79_gpio_function_disable(AR933X_GPIO_FUNC_ETH_SWITCH_LED0_EN |
+ 				    AR933X_GPIO_FUNC_ETH_SWITCH_LED1_EN |
+ 				    AR933X_GPIO_FUNC_ETH_SWITCH_LED2_EN |
+Index: target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr741nd.c
+===================================================================
+--- target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr741nd.c	(revision 31220)
++++ target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr741nd.c	(working copy)
+@@ -14,6 +14,7 @@
+ #include "common.h"
+ #include "dev-ap9x-pci.h"
+ #include "dev-eth.h"
++#include "dev-usb.h"
+ #include "dev-gpio-buttons.h"
+ #include "dev-leds-gpio.h"
+ #include "dev-m25p80.h"
+@@ -97,6 +98,8 @@
+ 	u8 *mac = (u8 *) KSEG1ADDR(0x1f01fc00);
+ 	u8 *ee = (u8 *) KSEG1ADDR(0x1fff1000);
+ 
++	ath79_register_usb();
++
+ 	ath79_register_m25p80(&tl_wr741nd_flash_data);
+ 
+ 	ath79_gpio_function_disable(AR724X_GPIO_FUNC_ETH_SWITCH_LED0_EN |
+Index: target/linux/ar71xx/generic/profiles/00-default.mk
+===================================================================
+--- target/linux/ar71xx/generic/profiles/00-default.mk	(revision 31220)
++++ target/linux/ar71xx/generic/profiles/00-default.mk	(working copy)
+@@ -8,7 +8,7 @@
+ define Profile/Default
+ 	NAME:=Default Profile (all drivers)
+ 	PACKAGES:= \
+-		kmod-usb-core kmod-usb-ohci kmod-usb2 kmod-ledtrig-usbdev
++		kmod-nls-base kmod-usb-core kmod-usb2
+ endef
+ 
+ define Profile/Default/Description
+Index: target/linux/ar71xx/generic/profiles/tp-link.mk
+===================================================================
+--- target/linux/ar71xx/generic/profiles/tp-link.mk	(revision 31220)
++++ target/linux/ar71xx/generic/profiles/tp-link.mk	(working copy)
+@@ -85,7 +85,7 @@
+ 
+ define Profile/TLWR740
+ 	NAME:=TP-LINK TL-WR740N/ND
+-	PACKAGES:=
++	PACKAGES:=kmod-nls-base kmod-usb-core kmod-usb2
+ endef
+ 
+ define Profile/TLWR740/Description
+@@ -96,7 +96,7 @@
+ 
+ define Profile/TLWR741
+ 	NAME:=TP-LINK TL-WR741N/ND
+-	PACKAGES:=
++	PACKAGES:=kmod-nls-base kmod-usb-core kmod-usb2
+ endef
+ 
+ define Profile/TLWR741/Description
